@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BaiduMap</title>
+    <script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=QGYam0hRskLlIDn3NS9yqGF0IUMWeSzQ&services=&t=20170801112042"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+    <link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            /* width: 100%; */
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="map"></div>
+
+    <script>
+        var map = new BMap.Map("map"); //新建一个map
+        var point = new BMap.Point(120.57593, 31.301877); //设置坐标
+        map.centerAndZoom(point, 16); //初始化地图设置中心点坐标和地图级别
+        /* 添加control */
+        map.addControl(new BMap.NavigationControl({
+            anchor: BMAP_ANCHOR_TOP_RIGHT //工具放到右上角
+        }));
+        map.addControl(new BMap.ScaleControl());
+        map.enableScrollWheelZoom();
+
+
+        var content = '<div style="margin:0;line-height:20px;padding:2px;">' +
+            '<img src="../img/baidu.jpg" alt="" style="float:right;zoom:1;overflow:hidden;width:100px;height:100px;margin-left:3px;"/>' +
+            '地址：苏州市狮山路28号高新广场<br/>电话：(0512)8888 8888<br/>简介：办公总部。' +
+            '</div>';
+        var searchInfoWindow = null;
+        searchInfoWindow = new BMapLib.SearchInfoWindow(map, content, {
+            title: "XX集团",
+            width: 355,
+            panel: "panel",
+            enableAutoPan: true, //自动平移
+            searchTypes: [
+                BMAPLIB_TAB_SEARCH, //周边检索
+                BMAPLIB_TAB_TO_HERE, //到这里去
+                BMAPLIB_TAB_FROM_HERE //从这里出发
+            ]
+        })
+        map.addEventListener("click", function (e) {
+            searchInfoWindow.open(marker);
+        })
+
+        var marker = new BMap.Marker(point); //新建一个标注符号
+        map.addOverlay(marker);
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+
+
+
+
+
+        var pt = new BMap.Point(120.579536, 31.300056);
+        var myIcon = new BMap.Icon("1.gif", new BMap.Size(77, 89));
+        var marker2 = new BMap.Marker(pt, {
+            icon: myIcon
+        });
+        map.addOverlay(marker2);
+    </script>
+
+</body>
+
+</html>
